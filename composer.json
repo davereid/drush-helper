@@ -1,0 +1,12 @@
+{
+  "name": "davereid/drupal-drush",
+  "type": "drupal-drush",
+  "require": {
+    "drush/drush": "^12.0 || ^13.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "DaveReid\\DrupalDrush\\": "src/"
+    }
+  }
+}
