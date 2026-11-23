@@ -6,12 +6,13 @@ namespace DaveReid\DrupalDrush\Drush\Commands;
 
 use Drush\Attributes as CLI;
 use Drush\Boot\DrupalBootLevels;
+use Drush\Commands\DrushCommands;
 use Drush\Drush;
 
 /**
  * Additional Drupal commands.
  */
-class DrupalCommands extends DrushCommands {
+class DrupalDrushCommands extends DrushCommands {
 
   /**
    * Checks if Drupal is installed.
@@ -25,7 +26,6 @@ class DrupalCommands extends DrushCommands {
       if ($bootstrap->bootstrapDrupalConfigurationValidate($bootstrapManager)) {
         $bootstrap->bootstrapDrupalConfiguration($bootstrapManager);
         if ($bootstrap->bootstrapDrupalDatabaseValidate($bootstrapManager)) {
-          $this->logger()->
           return 0;
         }
       }
