@@ -23,18 +23,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # The oldest PHP the older pair allows and the newest the newer pair runs on.
+        # Job names leave out PHP, since they're the ci ruleset's required checks.
         include:
           - drupal: 10
             drush: 12
+            php: '8.1'
           - drupal: 11
             drush: 13
+            php: '8.6'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
-          php-version: '8.3'
+          php-version: ${{ matrix.php }}
           tools: composer
       - run: tests/functional.sh
         env:
