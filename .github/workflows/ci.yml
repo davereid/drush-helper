@@ -16,7 +16,8 @@ concurrency:
 
 jobs:
   functional:
-    name: Drupal ${{ matrix.drupal }}, Drush ${{ matrix.drush }}
+    # Job names are the ci ruleset's required checks: update it when they change.
+    name: Drupal ${{ matrix.drupal }}, Drush ${{ matrix.drush }}, PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     permissions:
       contents: read # Check out the repository.
@@ -24,7 +25,6 @@ jobs:
       fail-fast: false
       matrix:
         # The oldest PHP the older pair allows and the newest the newer pair runs on.
-        # Job names leave out PHP, since they're the ci ruleset's required checks.
         include:
           - drupal: 10
             drush: 12
