@@ -10,12 +10,11 @@ Helpful Drush commands, installed with Composer as a `drupal-drush` package. It 
 ## Tests
 
 - `tests/functional.sh` installs the package into a new Drupal project with SQLite, then runs the commands. `DRUPAL_VERSION` and `DRUSH_VERSION` choose the versions (defaults: 11 and 13), e.g. `DRUPAL_VERSION=10 DRUSH_VERSION=12 tests/functional.sh`.
-- The `CI` workflow runs it once per supported Drush major, each with a Drupal major that Drush supports and a different PHP version, so the jobs cover the whole PHP range without testing a version twice:
-  - the oldest pair on the lowest PHP it allows;
-  - the newest pair on the newest PHP release it runs on;
-  - pairs in between on versions in between.
+- The `CI` workflow runs it twice for each supported Drush major:
+  - on the lowest PHP that Drush major allows, with the oldest Drupal major it supports;
+  - on the newest PHP it passes on, with the newest Drupal major it supports.
 
-  When the Drush constraint gains a major, add a pair and move the others' PHP versions to keep them spread out.
+  Neither Drush nor Drupal declares a highest PHP version, so try each new PHP release in CI and move the newest-PHP jobs up when they pass. When the Drush constraint gains a major, add its two jobs.
 - The job names include the PHP version and are the `ci` ruleset's required checks: update the ruleset whenever a name changes.
 
 ## Releases
