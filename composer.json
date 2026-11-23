@@ -1,12 +1,14 @@
 {
-  "name": "davereid/drupal-drush",
+  "name": "davereid/drush-helper",
+  "description": "Helpful Drush commands.",
   "type": "drupal-drush",
+  "license": "GPL-2.0-or-later",
   "require": {
     "drush/drush": "^12.0 || ^13.0"
   },
   "autoload": {
     "psr-4": {
-      "DaveReid\\DrupalDrush\\": "src/"
+      "DaveReid\\DrushHelper\\": "src/"
     }
   }
 }
