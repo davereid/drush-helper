@@ -37,5 +37,3 @@ jobs:
           token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           release-type: php
           target-branch: ${{ github.ref_name }}
-          # Remove once 0.1.0 is released, or every release will be 0.1.0.
-          release-as: 0.1.0
