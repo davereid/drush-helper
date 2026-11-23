@@ -20,6 +20,18 @@ if "$drush" drupal:installed; then
   exit 1
 fi
 
+# Drupal 11.4 and later also have core's dr command.
+dr="$dir/vendor/bin/dr"
+if [ -x "$dr" ] && "$dr" drupal:installed; then
+  echo "FAIL: dr drupal:installed exited 0 before install" >&2
+  exit 1
+fi
+
 "$drush" site:install --yes --db-url="sqlite://localhost/$dir/db.sqlite" minimal
 "$drush" drupal:installed
+if [ -x "$dr" ]; then
+  # Fails if dr doesn't discover the command.
+  "$dr" help drupal:installed >/dev/null
+  "$dr" drupal:installed
+fi
 echo "PASS"
