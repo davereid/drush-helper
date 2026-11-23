@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - '[0-9]*.x'
+
+permissions: {}
+
+# Cancel superseded runs on the same branch or PR.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  functional:
+    name: Drupal ${{ matrix.drupal }}, Drush ${{ matrix.drush }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Check out the repository.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - drupal: 10
+            drush: 12
+          - drupal: 11
+            drush: 13
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.3'
+          tools: composer
+      - run: tests/functional.sh
+        env:
+          DRUPAL_VERSION: ${{ matrix.drupal }}
+          DRUSH_VERSION: ${{ matrix.drush }}
+
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Check out the repository.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: zizmorcore/zizmor-action@bd12b495c90993a4301c73398142281a61499af3 # v0.9.0
+        with:
+          # Report findings in the job log instead of uploading to code scanning.
+          advanced-security: false
+          persona: auditor

@@ -1,0 +1,41 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+      - '[0-9]*.x'
+
+permissions: {}
+
+# Queue release runs per branch; never cancel one partway through a release.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    environment: release
+    # Only used by the GITHUB_TOKEN fallback until the release App is set up.
+    permissions:
+      contents: write # Create release commits, tags and releases.
+      issues: write # Create release labels.
+      pull-requests: write # Open and update release PRs.
+    steps:
+      - id: app-token
+        if: vars.RELEASE_PLEASE_CLIENT_ID != ''
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          client-id: ${{ vars.RELEASE_PLEASE_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_PLEASE_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          release-type: php
+          target-branch: ${{ github.ref_name }}
+          # Remove once 0.1.0 is released, or every release will be 0.1.0.
+          release-as: 0.1.0
