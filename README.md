@@ -4,7 +4,7 @@ Helpful Drush commands for Drupal sites. It's a Composer package of type `drupal
 
 ## Requirements
 
-- Drush 12 or 13
+- Drush 12 or 13. Drush 14 won't be released, and support for Drush 15 and Drupal core's `dr` command is planned in [#6](https://github.com/davereid/drush-helper/issues/6).
 - Drupal 10 or 11, as supported by your Drush version
 - PHP 8.1 or newer, as required by your Drush and Drupal versions
 
